@@ -1,0 +1,8 @@
+prefix=/home/xyd/workspace/yida_uva_ws/install
+
+Name: offboard
+Description: Description of offboard
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

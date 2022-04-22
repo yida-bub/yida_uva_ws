@@ -123,7 +123,7 @@ int main(int argc, char **argv)
  
     //起飞点高度记录
     double home_high = high.pose.position.z;
-
+    ROS_INFO("home_high = %lf", home_high);
     //更新时间
     ros::Time last_request = ros::Time::now();
     
@@ -158,7 +158,6 @@ int main(int argc, char **argv)
         printf("uva_task_stat = %d\n", uva_task_stat);
         switch(uva_task_stat){
             case PREPARE:
-                // ROS_INFO("prepare!!!");
                 ROS_INFO("GO_TAKOFF !!!");
                 break;
             case TAKOFF:

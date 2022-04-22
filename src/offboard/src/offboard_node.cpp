@@ -130,6 +130,8 @@ int main(int argc, char **argv)
     pose.pose.position.x = 0;
     pose.pose.position.y = 0;
     pose.pose.position.z = 2;
+
+    local_pos_pub.publish(pose);
  
     //建立一个类型为SetMode的服务端offb_set_mode，并将其中的模式mode设为"OFFBOARD"，作用便是用于后面的
     //客户端与服务端之间的通信（服务）
