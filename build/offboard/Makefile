@@ -80,16 +80,6 @@ install/fast: preinstall/fast
 	/usr/bin/cmake -P cmake_install.cmake
 .PHONY : install/fast
 
-# Special rule for the target list_install_components
-list_install_components:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
-.PHONY : list_install_components
-
-# Special rule for the target list_install_components
-list_install_components/fast: list_install_components
-
-.PHONY : list_install_components/fast
-
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -111,6 +101,16 @@ test:
 test/fast: test
 
 .PHONY : test/fast
+
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+
+.PHONY : list_install_components/fast
 
 # Special rule for the target install/local
 install/local: preinstall
@@ -168,34 +168,19 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-offboard/CMakeFiles/offboard_node_copy.dir/rule:
-	cd /home/xyd/workspace/yida_uva_ws/build && $(MAKE) -f CMakeFiles/Makefile2 offboard/CMakeFiles/offboard_node_copy.dir/rule
-.PHONY : offboard/CMakeFiles/offboard_node_copy.dir/rule
+offboard/CMakeFiles/velpoes_control.dir/rule:
+	cd /home/xyd/workspace/yida_uva_ws/build && $(MAKE) -f CMakeFiles/Makefile2 offboard/CMakeFiles/velpoes_control.dir/rule
+.PHONY : offboard/CMakeFiles/velpoes_control.dir/rule
 
 # Convenience name for target.
-offboard_node_copy: offboard/CMakeFiles/offboard_node_copy.dir/rule
+velpoes_control: offboard/CMakeFiles/velpoes_control.dir/rule
 
-.PHONY : offboard_node_copy
+.PHONY : velpoes_control
 
 # fast build rule for target.
-offboard_node_copy/fast:
-	cd /home/xyd/workspace/yida_uva_ws/build && $(MAKE) -f offboard/CMakeFiles/offboard_node_copy.dir/build.make offboard/CMakeFiles/offboard_node_copy.dir/build
-.PHONY : offboard_node_copy/fast
-
-# Convenience name for target.
-offboard/CMakeFiles/offboard_node.dir/rule:
-	cd /home/xyd/workspace/yida_uva_ws/build && $(MAKE) -f CMakeFiles/Makefile2 offboard/CMakeFiles/offboard_node.dir/rule
-.PHONY : offboard/CMakeFiles/offboard_node.dir/rule
-
-# Convenience name for target.
-offboard_node: offboard/CMakeFiles/offboard_node.dir/rule
-
-.PHONY : offboard_node
-
-# fast build rule for target.
-offboard_node/fast:
-	cd /home/xyd/workspace/yida_uva_ws/build && $(MAKE) -f offboard/CMakeFiles/offboard_node.dir/build.make offboard/CMakeFiles/offboard_node.dir/build
-.PHONY : offboard_node/fast
+velpoes_control/fast:
+	cd /home/xyd/workspace/yida_uva_ws/build && $(MAKE) -f offboard/CMakeFiles/velpoes_control.dir/build.make offboard/CMakeFiles/velpoes_control.dir/build
+.PHONY : velpoes_control/fast
 
 # Convenience name for target.
 offboard/CMakeFiles/trajectory_msgs_generate_messages_nodejs.dir/rule:
@@ -1008,6 +993,21 @@ uuid_msgs_generate_messages_nodejs/fast:
 .PHONY : uuid_msgs_generate_messages_nodejs/fast
 
 # Convenience name for target.
+offboard/CMakeFiles/takeoff.dir/rule:
+	cd /home/xyd/workspace/yida_uva_ws/build && $(MAKE) -f CMakeFiles/Makefile2 offboard/CMakeFiles/takeoff.dir/rule
+.PHONY : offboard/CMakeFiles/takeoff.dir/rule
+
+# Convenience name for target.
+takeoff: offboard/CMakeFiles/takeoff.dir/rule
+
+.PHONY : takeoff
+
+# fast build rule for target.
+takeoff/fast:
+	cd /home/xyd/workspace/yida_uva_ws/build && $(MAKE) -f offboard/CMakeFiles/takeoff.dir/build.make offboard/CMakeFiles/takeoff.dir/build
+.PHONY : takeoff/fast
+
+# Convenience name for target.
 offboard/CMakeFiles/uuid_msgs_generate_messages_py.dir/rule:
 	cd /home/xyd/workspace/yida_uva_ws/build && $(MAKE) -f CMakeFiles/Makefile2 offboard/CMakeFiles/uuid_msgs_generate_messages_py.dir/rule
 .PHONY : offboard/CMakeFiles/uuid_msgs_generate_messages_py.dir/rule
@@ -1247,59 +1247,59 @@ actionlib_msgs_generate_messages_nodejs/fast:
 	cd /home/xyd/workspace/yida_uva_ws/build && $(MAKE) -f offboard/CMakeFiles/actionlib_msgs_generate_messages_nodejs.dir/build.make offboard/CMakeFiles/actionlib_msgs_generate_messages_nodejs.dir/build
 .PHONY : actionlib_msgs_generate_messages_nodejs/fast
 
-src/offboard_node.o: src/offboard_node.cpp.o
+src/takeoff.o: src/takeoff.cpp.o
 
-.PHONY : src/offboard_node.o
-
-# target to build an object file
-src/offboard_node.cpp.o:
-	cd /home/xyd/workspace/yida_uva_ws/build && $(MAKE) -f offboard/CMakeFiles/offboard_node.dir/build.make offboard/CMakeFiles/offboard_node.dir/src/offboard_node.cpp.o
-.PHONY : src/offboard_node.cpp.o
-
-src/offboard_node.i: src/offboard_node.cpp.i
-
-.PHONY : src/offboard_node.i
-
-# target to preprocess a source file
-src/offboard_node.cpp.i:
-	cd /home/xyd/workspace/yida_uva_ws/build && $(MAKE) -f offboard/CMakeFiles/offboard_node.dir/build.make offboard/CMakeFiles/offboard_node.dir/src/offboard_node.cpp.i
-.PHONY : src/offboard_node.cpp.i
-
-src/offboard_node.s: src/offboard_node.cpp.s
-
-.PHONY : src/offboard_node.s
-
-# target to generate assembly for a file
-src/offboard_node.cpp.s:
-	cd /home/xyd/workspace/yida_uva_ws/build && $(MAKE) -f offboard/CMakeFiles/offboard_node.dir/build.make offboard/CMakeFiles/offboard_node.dir/src/offboard_node.cpp.s
-.PHONY : src/offboard_node.cpp.s
-
-src/offboard_node_copy.o: src/offboard_node_copy.cpp.o
-
-.PHONY : src/offboard_node_copy.o
+.PHONY : src/takeoff.o
 
 # target to build an object file
-src/offboard_node_copy.cpp.o:
-	cd /home/xyd/workspace/yida_uva_ws/build && $(MAKE) -f offboard/CMakeFiles/offboard_node_copy.dir/build.make offboard/CMakeFiles/offboard_node_copy.dir/src/offboard_node_copy.cpp.o
-.PHONY : src/offboard_node_copy.cpp.o
+src/takeoff.cpp.o:
+	cd /home/xyd/workspace/yida_uva_ws/build && $(MAKE) -f offboard/CMakeFiles/takeoff.dir/build.make offboard/CMakeFiles/takeoff.dir/src/takeoff.cpp.o
+.PHONY : src/takeoff.cpp.o
 
-src/offboard_node_copy.i: src/offboard_node_copy.cpp.i
+src/takeoff.i: src/takeoff.cpp.i
 
-.PHONY : src/offboard_node_copy.i
+.PHONY : src/takeoff.i
 
 # target to preprocess a source file
-src/offboard_node_copy.cpp.i:
-	cd /home/xyd/workspace/yida_uva_ws/build && $(MAKE) -f offboard/CMakeFiles/offboard_node_copy.dir/build.make offboard/CMakeFiles/offboard_node_copy.dir/src/offboard_node_copy.cpp.i
-.PHONY : src/offboard_node_copy.cpp.i
+src/takeoff.cpp.i:
+	cd /home/xyd/workspace/yida_uva_ws/build && $(MAKE) -f offboard/CMakeFiles/takeoff.dir/build.make offboard/CMakeFiles/takeoff.dir/src/takeoff.cpp.i
+.PHONY : src/takeoff.cpp.i
 
-src/offboard_node_copy.s: src/offboard_node_copy.cpp.s
+src/takeoff.s: src/takeoff.cpp.s
 
-.PHONY : src/offboard_node_copy.s
+.PHONY : src/takeoff.s
 
 # target to generate assembly for a file
-src/offboard_node_copy.cpp.s:
-	cd /home/xyd/workspace/yida_uva_ws/build && $(MAKE) -f offboard/CMakeFiles/offboard_node_copy.dir/build.make offboard/CMakeFiles/offboard_node_copy.dir/src/offboard_node_copy.cpp.s
-.PHONY : src/offboard_node_copy.cpp.s
+src/takeoff.cpp.s:
+	cd /home/xyd/workspace/yida_uva_ws/build && $(MAKE) -f offboard/CMakeFiles/takeoff.dir/build.make offboard/CMakeFiles/takeoff.dir/src/takeoff.cpp.s
+.PHONY : src/takeoff.cpp.s
+
+src/velpoes_control.o: src/velpoes_control.cpp.o
+
+.PHONY : src/velpoes_control.o
+
+# target to build an object file
+src/velpoes_control.cpp.o:
+	cd /home/xyd/workspace/yida_uva_ws/build && $(MAKE) -f offboard/CMakeFiles/velpoes_control.dir/build.make offboard/CMakeFiles/velpoes_control.dir/src/velpoes_control.cpp.o
+.PHONY : src/velpoes_control.cpp.o
+
+src/velpoes_control.i: src/velpoes_control.cpp.i
+
+.PHONY : src/velpoes_control.i
+
+# target to preprocess a source file
+src/velpoes_control.cpp.i:
+	cd /home/xyd/workspace/yida_uva_ws/build && $(MAKE) -f offboard/CMakeFiles/velpoes_control.dir/build.make offboard/CMakeFiles/velpoes_control.dir/src/velpoes_control.cpp.i
+.PHONY : src/velpoes_control.cpp.i
+
+src/velpoes_control.s: src/velpoes_control.cpp.s
+
+.PHONY : src/velpoes_control.s
+
+# target to generate assembly for a file
+src/velpoes_control.cpp.s:
+	cd /home/xyd/workspace/yida_uva_ws/build && $(MAKE) -f offboard/CMakeFiles/velpoes_control.dir/build.make offboard/CMakeFiles/velpoes_control.dir/src/velpoes_control.cpp.s
+.PHONY : src/velpoes_control.cpp.s
 
 # Help Target
 help:
@@ -1309,11 +1309,10 @@ help:
 	@echo "... depend"
 	@echo "... install/strip"
 	@echo "... install"
-	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... test"
-	@echo "... offboard_node_copy"
-	@echo "... offboard_node"
+	@echo "... list_install_components"
+	@echo "... velpoes_control"
 	@echo "... trajectory_msgs_generate_messages_nodejs"
 	@echo "... trajectory_msgs_generate_messages_lisp"
 	@echo "... trajectory_msgs_generate_messages_cpp"
@@ -1369,6 +1368,7 @@ help:
 	@echo "... sensor_msgs_generate_messages_eus"
 	@echo "... sensor_msgs_generate_messages_lisp"
 	@echo "... uuid_msgs_generate_messages_nodejs"
+	@echo "... takeoff"
 	@echo "... uuid_msgs_generate_messages_py"
 	@echo "... tf2_msgs_generate_messages_py"
 	@echo "... mavros_msgs_generate_messages_cpp"
@@ -1386,12 +1386,12 @@ help:
 	@echo "... std_msgs_generate_messages_eus"
 	@echo "... actionlib_msgs_generate_messages_lisp"
 	@echo "... actionlib_msgs_generate_messages_nodejs"
-	@echo "... src/offboard_node.o"
-	@echo "... src/offboard_node.i"
-	@echo "... src/offboard_node.s"
-	@echo "... src/offboard_node_copy.o"
-	@echo "... src/offboard_node_copy.i"
-	@echo "... src/offboard_node_copy.s"
+	@echo "... src/takeoff.o"
+	@echo "... src/takeoff.i"
+	@echo "... src/takeoff.s"
+	@echo "... src/velpoes_control.o"
+	@echo "... src/velpoes_control.i"
+	@echo "... src/velpoes_control.s"
 .PHONY : help
 
 

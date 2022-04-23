@@ -285,30 +285,17 @@ gtest/fast:
 .PHONY : gtest/fast
 
 #=============================================================================
-# Target rules for targets named offboard_node_copy
+# Target rules for targets named velpoes_control
 
 # Build rule for target.
-offboard_node_copy: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 offboard_node_copy
-.PHONY : offboard_node_copy
+velpoes_control: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 velpoes_control
+.PHONY : velpoes_control
 
 # fast build rule for target.
-offboard_node_copy/fast:
-	$(MAKE) -f offboard/CMakeFiles/offboard_node_copy.dir/build.make offboard/CMakeFiles/offboard_node_copy.dir/build
-.PHONY : offboard_node_copy/fast
-
-#=============================================================================
-# Target rules for targets named offboard_node
-
-# Build rule for target.
-offboard_node: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 offboard_node
-.PHONY : offboard_node
-
-# fast build rule for target.
-offboard_node/fast:
-	$(MAKE) -f offboard/CMakeFiles/offboard_node.dir/build.make offboard/CMakeFiles/offboard_node.dir/build
-.PHONY : offboard_node/fast
+velpoes_control/fast:
+	$(MAKE) -f offboard/CMakeFiles/velpoes_control.dir/build.make offboard/CMakeFiles/velpoes_control.dir/build
+.PHONY : velpoes_control/fast
 
 #=============================================================================
 # Target rules for targets named trajectory_msgs_generate_messages_nodejs
@@ -1011,6 +998,19 @@ uuid_msgs_generate_messages_nodejs: cmake_check_build_system
 uuid_msgs_generate_messages_nodejs/fast:
 	$(MAKE) -f offboard/CMakeFiles/uuid_msgs_generate_messages_nodejs.dir/build.make offboard/CMakeFiles/uuid_msgs_generate_messages_nodejs.dir/build
 .PHONY : uuid_msgs_generate_messages_nodejs/fast
+
+#=============================================================================
+# Target rules for targets named takeoff
+
+# Build rule for target.
+takeoff: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 takeoff
+.PHONY : takeoff
+
+# fast build rule for target.
+takeoff/fast:
+	$(MAKE) -f offboard/CMakeFiles/takeoff.dir/build.make offboard/CMakeFiles/takeoff.dir/build
+.PHONY : takeoff/fast
 
 #=============================================================================
 # Target rules for targets named uuid_msgs_generate_messages_py
@@ -1723,8 +1723,7 @@ help:
 	@echo "... gmock"
 	@echo "... gtest_main"
 	@echo "... gtest"
-	@echo "... offboard_node_copy"
-	@echo "... offboard_node"
+	@echo "... velpoes_control"
 	@echo "... trajectory_msgs_generate_messages_nodejs"
 	@echo "... trajectory_msgs_generate_messages_lisp"
 	@echo "... trajectory_msgs_generate_messages_cpp"
@@ -1779,6 +1778,7 @@ help:
 	@echo "... sensor_msgs_generate_messages_eus"
 	@echo "... sensor_msgs_generate_messages_lisp"
 	@echo "... uuid_msgs_generate_messages_nodejs"
+	@echo "... takeoff"
 	@echo "... uuid_msgs_generate_messages_py"
 	@echo "... tf2_msgs_generate_messages_py"
 	@echo "... mavros_msgs_generate_messages_cpp"

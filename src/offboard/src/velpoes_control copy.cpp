@@ -8,13 +8,17 @@
 #include <stdio.h>
 #include <math.h>
  
-#define TAKOFF_HIGH 2
+#define TAKOFF_HIGH 3
 
 enum STEP{
-    PREPARE,
-    TAKOFF,
-    GOTO_POINT_1,
-    GOTO_POINT_2,
+    PREPARE, //准备
+    TAKOFF, //起任务
+    TASK_FIRST, //任务1
+    TASK_SECOND, //任务2
+    TASK_THIRD, //任务3
+    TASK_FOURTH, //任务4
+    TASK_FIFTH, //任务5
+    TASK_SIXTH, //任务6
 }step_flow;
 
 //建立一个订阅消息体类型的变量，用于存储订阅的信息
@@ -35,26 +39,9 @@ void pose_control(double const x, double const y, double const z){
     pose.pose.position.y = y;
     pose.pose.position.z = z;
 }
-void position_control_xyz(double const x, double const y, double const z){
-    velocity_msg.coordinate_frame = mavros_msgs::PositionTarget::FRAME_BODY_OFFSET_NED;
-    velocity_msg.type_mask =    mavros_msgs::PositionTarget::IGNORE_VX | //Velocity vector ignore flags 速度
-                                mavros_msgs::PositionTarget::IGNORE_VY |
-                                mavros_msgs::PositionTarget::IGNORE_VZ |
-                                mavros_msgs::PositionTarget::IGNORE_AFX | //Acceleration/Force vector ignore flags 加速度
-                                mavros_msgs::PositionTarget::IGNORE_AFY |
-                                mavros_msgs::PositionTarget::IGNORE_AFZ |
-                                mavros_msgs::PositionTarget::FORCE |
-                                mavros_msgs::PositionTarget::IGNORE_YAW | //偏航
-                                mavros_msgs::PositionTarget::IGNORE_YAW_RATE //偏航率
-                                ; 
-    velocity_msg.position.x = x;
-    velocity_msg.position.y = y;
-    velocity_msg.position.z = z;
-    velocity_msg.header.stamp = ros::Time::now();
-}
 // 速度、偏航角控制
-void position_control_vxyz(double const vx, double const vy, double const vz, float const yaw){
-    velocity_msg.coordinate_frame = mavros_msgs::PositionTarget::FRAME_BODY_OFFSET_NED;
+void position_control_xyz(double const vx, double const vy, float const yaw){
+    velocity_msg.coordinate_frame = mavros_msgs::PositionTarget::FRAME_BODY_NED;
     velocity_msg.type_mask =    mavros_msgs::PositionTarget::IGNORE_PX | //Position ignore flags 位置
                                 mavros_msgs::PositionTarget::IGNORE_PY |
                                 mavros_msgs::PositionTarget::IGNORE_PZ | 
@@ -65,13 +52,39 @@ void position_control_vxyz(double const vx, double const vy, double const vz, fl
                                 mavros_msgs::PositionTarget::IGNORE_AFY |
                                 mavros_msgs::PositionTarget::IGNORE_AFZ |
                                 mavros_msgs::PositionTarget::FORCE |
-                                // mavros_msgs::PositionTarget::IGNORE_YAW | //偏航
+                                // mavros_msgs::PositionTarget::IGNORE_YAW  //偏航
+                                mavros_msgs::PositionTarget::IGNORE_YAW_RATE //偏航率
+                                ; 
+    velocity_msg.velocity.x = vx;
+    // velocity_msg.velocity.y = vy;
+    // velocity_msg.velocity.z = vz;
+    velocity_msg.yaw = yaw;
+    // velocity_msg.yaw_rate = yawr;
+    velocity_msg.position.z = TAKOFF_HIGH;
+    velocity_msg.header.stamp = ros::Time::now();
+}
+// 速度、偏航角控制
+void position_control_vxyz(double const vx, double const vy, float const yaw){
+    velocity_msg.coordinate_frame = mavros_msgs::PositionTarget::FRAME_BODY_NED;
+    velocity_msg.type_mask =    mavros_msgs::PositionTarget::IGNORE_PX | //Position ignore flags 位置
+                                mavros_msgs::PositionTarget::IGNORE_PY |
+                                mavros_msgs::PositionTarget::IGNORE_PZ | 
+                                // mavros_msgs::PositionTarget::IGNORE_VX | //Velocity vector ignore flags 速度
+                                // mavros_msgs::PositionTarget::IGNORE_VY |
+                                // mavros_msgs::PositionTarget::IGNORE_VZ |
+                                mavros_msgs::PositionTarget::IGNORE_AFX | //Acceleration/Force vector ignore flags 加速度
+                                mavros_msgs::PositionTarget::IGNORE_AFY |
+                                mavros_msgs::PositionTarget::IGNORE_AFZ |
+                                mavros_msgs::PositionTarget::FORCE |
+                                // mavros_msgs::PositionTarget::IGNORE_YAW  //偏航
                                 mavros_msgs::PositionTarget::IGNORE_YAW_RATE //偏航率
                                 ; 
     velocity_msg.velocity.x = vx;
     velocity_msg.velocity.y = vy;
-    velocity_msg.velocity.z = vz;
+    // velocity_msg.velocity.z = vz;
     velocity_msg.yaw = yaw;
+    // velocity_msg.yaw_rate = yawr;
+    velocity_msg.position.z = TAKOFF_HIGH;
     velocity_msg.header.stamp = ros::Time::now();
 }
 int main(int argc, char **argv)
@@ -84,7 +97,7 @@ int main(int argc, char **argv)
     ros::ServiceClient arming_client = nh.serviceClient<mavros_msgs::CommandBool>("mavros/cmd/arming");//启动服务1
     ros::ServiceClient set_mode_client = nh.serviceClient<mavros_msgs::SetMode>("mavros/set_mode");//启动服务2
 
-    ros::Publisher local_position_pub = nh.advertise<mavros_msgs::PositionTarget>("mavros/setpoint_pos_pub/relative", 10);
+    ros::Publisher local_position_pub = nh.advertise<mavros_msgs::PositionTarget>("mavros/setpoint_raw/local", 10);
     ros::Subscriber high_sub = nh.subscribe<geometry_msgs::PoseStamped>("/mavros/local_position/pose", 10, high_fun);
     
     //the setpoint publishing rate MUST be faster than 2Hz
@@ -126,6 +139,7 @@ int main(int argc, char **argv)
     ROS_INFO("home_high = %lf", home_high);
     //更新时间
     ros::Time last_request = ros::Time::now();
+    ros::Time step_time = ros::Time::now();
     
     int uva_task_stat = PREPARE;
 
@@ -139,7 +153,7 @@ int main(int argc, char **argv)
             {
                 ROS_INFO("Offboard enabled");//打开模式后打印信息
             }
-            uva_task_stat = TAKOFF;
+            // uva_task_stat = TAKOFF;
             last_request = ros::Time::now();
         }
         else //else指已经为offboard模式，然后进去判断是否解锁，如果没有解锁，则客户端arming_client向服务端arm_cmd发起请求call
@@ -152,27 +166,62 @@ int main(int argc, char **argv)
                     ROS_INFO("Vehicle armed");//解锁后打印信息
                 }
                 last_request = ros::Time::now();
+                step_time = ros::Time::now();
                 uva_task_stat = TAKOFF;
             }
         }
-        printf("uva_task_stat = %d\n", uva_task_stat);
         switch(uva_task_stat){
             case PREPARE:
-                ROS_INFO("GO_TAKOFF !!!");
+                pose_control(0,0,2);
+                local_pos_pub.publish(pose);
+                // ROS_INFO("GO_TAKOFF !!!");
                 break;
             case TAKOFF:
+                pose_control(0,0,3);
                 local_pos_pub.publish(pose); //发布位置信息，所以综上飞机只有先打开offboard模式然后解锁才能飞起来
-                if(fabs(high.pose.position.z - home_high) >= TAKOFF_HIGH*0.9){
-                    uva_task_stat = GOTO_POINT_1;
-                    ROS_INFO("GO_GOTO_POINT_1 !!!");
+                // ROS_INFO("%lf\t%lf\n", high.pose.position.z, home_high);
+                // if(ros::Time::now() - step_time >= ros::Duration(10.0)){
+                if(fabs(high.pose.position.z - home_high) >= 3*0.9){
+                    uva_task_stat = TASK_FIRST;
+                    step_time = ros::Time::now();
+                    ROS_INFO("GO_TASK_FIRST !!!");
                 }
                 break;
-            case GOTO_POINT_1:
-                uva_task_stat = GOTO_POINT_2;
-                ROS_INFO("GO_GOTO_POINT_2 !!!");
+            case TASK_FIRST:
+                position_control_vxyz(5,0,0);
+                local_position_pub.publish(velocity_msg);
+                if(ros::Time::now() - step_time >= ros::Duration(8.0)){
+                    uva_task_stat = TASK_SECOND;
+                    step_time = ros::Time::now();
+                    ROS_INFO("GO_TASK_SECOND !!!");
+                }
                 break;
-            case GOTO_POINT_2:
-                // ROS_INFO("");
+            case TASK_SECOND:
+                position_control_vxyz(0,10,0);
+                local_position_pub.publish(velocity_msg);
+                if(ros::Time::now() - step_time >= ros::Duration(4.0)){
+                    uva_task_stat = TASK_THIRD;
+                    step_time = ros::Time::now();
+                    ROS_INFO("GO_TASK_THIRD !!!");
+                }
+                break;
+            case TASK_THIRD:
+                position_control_vxyz(0,0,-90);
+                local_position_pub.publish(velocity_msg);
+                if(ros::Time::now() - step_time >= ros::Duration(5.0)){
+                    uva_task_stat = TASK_FIFTH;
+                    step_time = ros::Time::now();
+                    ROS_INFO("GO_TASK_FIFTH !!!");
+                }
+                break;
+            case TASK_FIFTH:
+                pose_control(0,0,3);
+                local_pos_pub.publish(pose);
+                if(ros::Time::now() - step_time >= ros::Duration(10.0)){
+                    uva_task_stat = TASK_SIXTH;
+                    step_time = ros::Time::now();
+                    ROS_INFO("GO_TASK_SIXTH !!!");
+                }
                 break;
         }
         ros::spinOnce();

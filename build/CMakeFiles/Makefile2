@@ -185,8 +185,8 @@ learning_topic/clean: learning_topic/CMakeFiles/learning_topic_generate_messages
 # Directory level rules for directory offboard
 
 # Recursive "all" directory target.
-offboard/all: offboard/CMakeFiles/offboard_node_copy.dir/all
-offboard/all: offboard/CMakeFiles/offboard_node.dir/all
+offboard/all: offboard/CMakeFiles/velpoes_control.dir/all
+offboard/all: offboard/CMakeFiles/takeoff.dir/all
 
 .PHONY : offboard/all
 
@@ -196,8 +196,7 @@ offboard/preinstall:
 .PHONY : offboard/preinstall
 
 # Recursive "clean" directory target.
-offboard/clean: offboard/CMakeFiles/offboard_node_copy.dir/clean
-offboard/clean: offboard/CMakeFiles/offboard_node.dir/clean
+offboard/clean: offboard/CMakeFiles/velpoes_control.dir/clean
 offboard/clean: offboard/CMakeFiles/trajectory_msgs_generate_messages_nodejs.dir/clean
 offboard/clean: offboard/CMakeFiles/trajectory_msgs_generate_messages_lisp.dir/clean
 offboard/clean: offboard/CMakeFiles/trajectory_msgs_generate_messages_cpp.dir/clean
@@ -252,6 +251,7 @@ offboard/clean: offboard/CMakeFiles/geographic_msgs_generate_messages_py.dir/cle
 offboard/clean: offboard/CMakeFiles/sensor_msgs_generate_messages_eus.dir/clean
 offboard/clean: offboard/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/clean
 offboard/clean: offboard/CMakeFiles/uuid_msgs_generate_messages_nodejs.dir/clean
+offboard/clean: offboard/CMakeFiles/takeoff.dir/clean
 offboard/clean: offboard/CMakeFiles/uuid_msgs_generate_messages_py.dir/clean
 offboard/clean: offboard/CMakeFiles/tf2_msgs_generate_messages_py.dir/clean
 offboard/clean: offboard/CMakeFiles/mavros_msgs_generate_messages_cpp.dir/clean
@@ -547,58 +547,31 @@ gtest/googletest/CMakeFiles/gtest.dir/clean:
 .PHONY : gtest/googletest/CMakeFiles/gtest.dir/clean
 
 #=============================================================================
-# Target rules for target offboard/CMakeFiles/offboard_node_copy.dir
+# Target rules for target offboard/CMakeFiles/velpoes_control.dir
 
 # All Build rule for target.
-offboard/CMakeFiles/offboard_node_copy.dir/all:
-	$(MAKE) -f offboard/CMakeFiles/offboard_node_copy.dir/build.make offboard/CMakeFiles/offboard_node_copy.dir/depend
-	$(MAKE) -f offboard/CMakeFiles/offboard_node_copy.dir/build.make offboard/CMakeFiles/offboard_node_copy.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xyd/workspace/yida_uva_ws/build/CMakeFiles --progress-num=20,21 "Built target offboard_node_copy"
-.PHONY : offboard/CMakeFiles/offboard_node_copy.dir/all
+offboard/CMakeFiles/velpoes_control.dir/all:
+	$(MAKE) -f offboard/CMakeFiles/velpoes_control.dir/build.make offboard/CMakeFiles/velpoes_control.dir/depend
+	$(MAKE) -f offboard/CMakeFiles/velpoes_control.dir/build.make offboard/CMakeFiles/velpoes_control.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xyd/workspace/yida_uva_ws/build/CMakeFiles --progress-num=31,32 "Built target velpoes_control"
+.PHONY : offboard/CMakeFiles/velpoes_control.dir/all
 
 # Build rule for subdir invocation for target.
-offboard/CMakeFiles/offboard_node_copy.dir/rule: cmake_check_build_system
+offboard/CMakeFiles/velpoes_control.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/xyd/workspace/yida_uva_ws/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 offboard/CMakeFiles/offboard_node_copy.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 offboard/CMakeFiles/velpoes_control.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/xyd/workspace/yida_uva_ws/build/CMakeFiles 0
-.PHONY : offboard/CMakeFiles/offboard_node_copy.dir/rule
+.PHONY : offboard/CMakeFiles/velpoes_control.dir/rule
 
 # Convenience name for target.
-offboard_node_copy: offboard/CMakeFiles/offboard_node_copy.dir/rule
+velpoes_control: offboard/CMakeFiles/velpoes_control.dir/rule
 
-.PHONY : offboard_node_copy
-
-# clean rule for target.
-offboard/CMakeFiles/offboard_node_copy.dir/clean:
-	$(MAKE) -f offboard/CMakeFiles/offboard_node_copy.dir/build.make offboard/CMakeFiles/offboard_node_copy.dir/clean
-.PHONY : offboard/CMakeFiles/offboard_node_copy.dir/clean
-
-#=============================================================================
-# Target rules for target offboard/CMakeFiles/offboard_node.dir
-
-# All Build rule for target.
-offboard/CMakeFiles/offboard_node.dir/all:
-	$(MAKE) -f offboard/CMakeFiles/offboard_node.dir/build.make offboard/CMakeFiles/offboard_node.dir/depend
-	$(MAKE) -f offboard/CMakeFiles/offboard_node.dir/build.make offboard/CMakeFiles/offboard_node.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xyd/workspace/yida_uva_ws/build/CMakeFiles --progress-num=18,19 "Built target offboard_node"
-.PHONY : offboard/CMakeFiles/offboard_node.dir/all
-
-# Build rule for subdir invocation for target.
-offboard/CMakeFiles/offboard_node.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/xyd/workspace/yida_uva_ws/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 offboard/CMakeFiles/offboard_node.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/xyd/workspace/yida_uva_ws/build/CMakeFiles 0
-.PHONY : offboard/CMakeFiles/offboard_node.dir/rule
-
-# Convenience name for target.
-offboard_node: offboard/CMakeFiles/offboard_node.dir/rule
-
-.PHONY : offboard_node
+.PHONY : velpoes_control
 
 # clean rule for target.
-offboard/CMakeFiles/offboard_node.dir/clean:
-	$(MAKE) -f offboard/CMakeFiles/offboard_node.dir/build.make offboard/CMakeFiles/offboard_node.dir/clean
-.PHONY : offboard/CMakeFiles/offboard_node.dir/clean
+offboard/CMakeFiles/velpoes_control.dir/clean:
+	$(MAKE) -f offboard/CMakeFiles/velpoes_control.dir/build.make offboard/CMakeFiles/velpoes_control.dir/clean
+.PHONY : offboard/CMakeFiles/velpoes_control.dir/clean
 
 #=============================================================================
 # Target rules for target offboard/CMakeFiles/trajectory_msgs_generate_messages_nodejs.dir
@@ -2059,6 +2032,33 @@ offboard/CMakeFiles/uuid_msgs_generate_messages_nodejs.dir/clean:
 .PHONY : offboard/CMakeFiles/uuid_msgs_generate_messages_nodejs.dir/clean
 
 #=============================================================================
+# Target rules for target offboard/CMakeFiles/takeoff.dir
+
+# All Build rule for target.
+offboard/CMakeFiles/takeoff.dir/all:
+	$(MAKE) -f offboard/CMakeFiles/takeoff.dir/build.make offboard/CMakeFiles/takeoff.dir/depend
+	$(MAKE) -f offboard/CMakeFiles/takeoff.dir/build.make offboard/CMakeFiles/takeoff.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xyd/workspace/yida_uva_ws/build/CMakeFiles --progress-num=22,23 "Built target takeoff"
+.PHONY : offboard/CMakeFiles/takeoff.dir/all
+
+# Build rule for subdir invocation for target.
+offboard/CMakeFiles/takeoff.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/xyd/workspace/yida_uva_ws/build/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 offboard/CMakeFiles/takeoff.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/xyd/workspace/yida_uva_ws/build/CMakeFiles 0
+.PHONY : offboard/CMakeFiles/takeoff.dir/rule
+
+# Convenience name for target.
+takeoff: offboard/CMakeFiles/takeoff.dir/rule
+
+.PHONY : takeoff
+
+# clean rule for target.
+offboard/CMakeFiles/takeoff.dir/clean:
+	$(MAKE) -f offboard/CMakeFiles/takeoff.dir/build.make offboard/CMakeFiles/takeoff.dir/clean
+.PHONY : offboard/CMakeFiles/takeoff.dir/clean
+
+#=============================================================================
 # Target rules for target offboard/CMakeFiles/uuid_msgs_generate_messages_py.dir
 
 # All Build rule for target.
@@ -2768,7 +2768,7 @@ learning_topic/CMakeFiles/learning_topic_genpy.dir/clean:
 learning_topic/CMakeFiles/person_publisher.dir/all: learning_topic/CMakeFiles/learning_topic_generate_messages_cpp.dir/all
 	$(MAKE) -f learning_topic/CMakeFiles/person_publisher.dir/build.make learning_topic/CMakeFiles/person_publisher.dir/depend
 	$(MAKE) -f learning_topic/CMakeFiles/person_publisher.dir/build.make learning_topic/CMakeFiles/person_publisher.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xyd/workspace/yida_uva_ws/build/CMakeFiles --progress-num=22,23 "Built target person_publisher"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xyd/workspace/yida_uva_ws/build/CMakeFiles --progress-num=18,19 "Built target person_publisher"
 .PHONY : learning_topic/CMakeFiles/person_publisher.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3069,7 +3069,7 @@ learning_topic/CMakeFiles/std_srvs_generate_messages_nodejs.dir/clean:
 learning_topic/CMakeFiles/person_subscriber.dir/all: learning_topic/CMakeFiles/learning_topic_generate_messages_cpp.dir/all
 	$(MAKE) -f learning_topic/CMakeFiles/person_subscriber.dir/build.make learning_topic/CMakeFiles/person_subscriber.dir/depend
 	$(MAKE) -f learning_topic/CMakeFiles/person_subscriber.dir/build.make learning_topic/CMakeFiles/person_subscriber.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xyd/workspace/yida_uva_ws/build/CMakeFiles --progress-num=24,25 "Built target person_subscriber"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xyd/workspace/yida_uva_ws/build/CMakeFiles --progress-num=20,21 "Built target person_subscriber"
 .PHONY : learning_topic/CMakeFiles/person_subscriber.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3155,7 +3155,7 @@ uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_cpp.dir/all: of
 uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_cpp.dir/all: uva_control_topic/CMakeFiles/_uva_control_topic_generate_messages_check_deps_msg_data_struct.dir/all
 	$(MAKE) -f uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_cpp.dir/build.make uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_cpp.dir/depend
 	$(MAKE) -f uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_cpp.dir/build.make uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_cpp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xyd/workspace/yida_uva_ws/build/CMakeFiles --progress-num=26 "Built target uva_control_topic_generate_messages_cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xyd/workspace/yida_uva_ws/build/CMakeFiles --progress-num=24 "Built target uva_control_topic_generate_messages_cpp"
 .PHONY : uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_cpp.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3322,7 +3322,7 @@ uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_eus.dir/all: of
 uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_eus.dir/all: uva_control_topic/CMakeFiles/_uva_control_topic_generate_messages_check_deps_msg_data_struct.dir/all
 	$(MAKE) -f uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_eus.dir/build.make uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_eus.dir/depend
 	$(MAKE) -f uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_eus.dir/build.make uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_eus.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xyd/workspace/yida_uva_ws/build/CMakeFiles --progress-num=27,28 "Built target uva_control_topic_generate_messages_eus"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xyd/workspace/yida_uva_ws/build/CMakeFiles --progress-num=25,26 "Built target uva_control_topic_generate_messages_eus"
 .PHONY : uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_eus.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3377,7 +3377,7 @@ uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_lisp.dir/all: o
 uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_lisp.dir/all: uva_control_topic/CMakeFiles/_uva_control_topic_generate_messages_check_deps_msg_data_struct.dir/all
 	$(MAKE) -f uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_lisp.dir/build.make uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_lisp.dir/depend
 	$(MAKE) -f uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_lisp.dir/build.make uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_lisp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xyd/workspace/yida_uva_ws/build/CMakeFiles --progress-num=29 "Built target uva_control_topic_generate_messages_lisp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xyd/workspace/yida_uva_ws/build/CMakeFiles --progress-num=27 "Built target uva_control_topic_generate_messages_lisp"
 .PHONY : uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_lisp.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3405,7 +3405,7 @@ uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_nodejs.dir/all:
 uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_nodejs.dir/all: uva_control_topic/CMakeFiles/_uva_control_topic_generate_messages_check_deps_msg_data_struct.dir/all
 	$(MAKE) -f uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_nodejs.dir/build.make uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_nodejs.dir/depend
 	$(MAKE) -f uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_nodejs.dir/build.make uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_nodejs.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xyd/workspace/yida_uva_ws/build/CMakeFiles --progress-num=30 "Built target uva_control_topic_generate_messages_nodejs"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xyd/workspace/yida_uva_ws/build/CMakeFiles --progress-num=28 "Built target uva_control_topic_generate_messages_nodejs"
 .PHONY : uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_nodejs.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3433,7 +3433,7 @@ uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_py.dir/all: off
 uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_py.dir/all: uva_control_topic/CMakeFiles/_uva_control_topic_generate_messages_check_deps_msg_data_struct.dir/all
 	$(MAKE) -f uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_py.dir/build.make uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_py.dir/depend
 	$(MAKE) -f uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_py.dir/build.make uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_py.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xyd/workspace/yida_uva_ws/build/CMakeFiles --progress-num=31,32 "Built target uva_control_topic_generate_messages_py"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xyd/workspace/yida_uva_ws/build/CMakeFiles --progress-num=29,30 "Built target uva_control_topic_generate_messages_py"
 .PHONY : uva_control_topic/CMakeFiles/uva_control_topic_generate_messages_py.dir/all
 
 # Build rule for subdir invocation for target.

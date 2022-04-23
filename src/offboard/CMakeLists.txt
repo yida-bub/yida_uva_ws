@@ -150,11 +150,11 @@ include_directories(
 #   ${catkin_LIBRARIES}
 # )
 
-add_executable(offboard_node src/offboard_node.cpp)
-target_link_libraries(offboard_node ${catkin_LIBRARIES})
+add_executable(takeoff src/takeoff.cpp)
+target_link_libraries(takeoff ${catkin_LIBRARIES})
 
-add_executable(offboard_node_copy src/offboard_node_copy.cpp)
-target_link_libraries(offboard_node_copy ${catkin_LIBRARIES})
+add_executable(velpoes_control src/velpoes_control.cpp)
+target_link_libraries(velpoes_control ${catkin_LIBRARIES})
 
 #############
 ## Install ##

@@ -37,11 +37,10 @@
 /home/xyd/workspace/yida_uva_ws/build/gtest/googletest/CMakeFiles/gtest.dir
 /home/xyd/workspace/yida_uva_ws/build/offboard/CMakeFiles/install/strip.dir
 /home/xyd/workspace/yida_uva_ws/build/offboard/CMakeFiles/install.dir
-/home/xyd/workspace/yida_uva_ws/build/offboard/CMakeFiles/list_install_components.dir
 /home/xyd/workspace/yida_uva_ws/build/offboard/CMakeFiles/rebuild_cache.dir
 /home/xyd/workspace/yida_uva_ws/build/offboard/CMakeFiles/test.dir
-/home/xyd/workspace/yida_uva_ws/build/offboard/CMakeFiles/offboard_node_copy.dir
-/home/xyd/workspace/yida_uva_ws/build/offboard/CMakeFiles/offboard_node.dir
+/home/xyd/workspace/yida_uva_ws/build/offboard/CMakeFiles/list_install_components.dir
+/home/xyd/workspace/yida_uva_ws/build/offboard/CMakeFiles/velpoes_control.dir
 /home/xyd/workspace/yida_uva_ws/build/offboard/CMakeFiles/trajectory_msgs_generate_messages_nodejs.dir
 /home/xyd/workspace/yida_uva_ws/build/offboard/CMakeFiles/trajectory_msgs_generate_messages_lisp.dir
 /home/xyd/workspace/yida_uva_ws/build/offboard/CMakeFiles/trajectory_msgs_generate_messages_cpp.dir
@@ -97,6 +96,7 @@
 /home/xyd/workspace/yida_uva_ws/build/offboard/CMakeFiles/sensor_msgs_generate_messages_eus.dir
 /home/xyd/workspace/yida_uva_ws/build/offboard/CMakeFiles/sensor_msgs_generate_messages_lisp.dir
 /home/xyd/workspace/yida_uva_ws/build/offboard/CMakeFiles/uuid_msgs_generate_messages_nodejs.dir
+/home/xyd/workspace/yida_uva_ws/build/offboard/CMakeFiles/takeoff.dir
 /home/xyd/workspace/yida_uva_ws/build/offboard/CMakeFiles/uuid_msgs_generate_messages_py.dir
 /home/xyd/workspace/yida_uva_ws/build/offboard/CMakeFiles/tf2_msgs_generate_messages_py.dir
 /home/xyd/workspace/yida_uva_ws/build/offboard/CMakeFiles/mavros_msgs_generate_messages_cpp.dir
