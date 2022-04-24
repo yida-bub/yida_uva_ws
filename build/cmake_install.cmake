@@ -131,6 +131,7 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/xyd/workspace/yida_uva_ws/build/gtest/cmake_install.cmake")
+  include("/home/xyd/workspace/yida_uva_ws/build/object_track/cmake_install.cmake")
   include("/home/xyd/workspace/yida_uva_ws/build/offboard/cmake_install.cmake")
   include("/home/xyd/workspace/yida_uva_ws/build/learning_topic/cmake_install.cmake")
   include("/home/xyd/workspace/yida_uva_ws/build/uva_control_topic/cmake_install.cmake")
