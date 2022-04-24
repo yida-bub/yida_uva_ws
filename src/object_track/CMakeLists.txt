@@ -106,7 +106,7 @@ catkin_package(
  INCLUDE_DIRS include
  LIBRARIES object_track
  CATKIN_DEPENDS geometry_msgs mavros roscpp
-#  DEPENDS system_lib
+ DEPENDS system_lib
 )
 
 ###########
@@ -116,7 +116,6 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
   include 
   ${catkin_INCLUDE_DIRS}
 )
@@ -151,11 +150,11 @@ include_directories(
 #   ${catkin_LIBRARIES}
 # )
 
-add_executable(object_track
+add_executable(object_track_node
   src/object_track_fun.cpp
   src/object_track_node.cpp
 )
-target_link_libraries(object_track ${catkin_LIBRARIES})
+target_link_libraries(object_track_node ${catkin_LIBRARIES})
 #############
 ## Install ##
 #############

@@ -210,5 +210,44 @@ int data_disposal(move_t *move, data_t *const data)
     // printf("xv: %lf\tyaw: %lf\n", move->x_vel, move->yaw);
     return 0;
 }
-
+int data_readtodisp(data_t* new_data, data_t* old_data, char* const exp_file_path, move_t* move)
+{
+    if (new_data->classes == 0)
+    {
+        *old_data = *new_data;
+    }
+    //获取文件
+    char data_path[128] = {};
+    if (getnewfile(exp_file_path, data_path) == -1)
+    {
+        new_data->classes = -1;
+        return -1;
+    }
+    //读取文件
+    char data_buf[128] = {};
+    if (readfiledata(data_path, data_buf, sizeof(data_buf)) == -1)
+    {
+        new_data->classes = -1;
+        return -1;
+    }
+    //分割数据
+    data_t data_tok[32];
+    if (tokdata(data_buf, data_tok) == -1)
+    {
+        new_data->classes = -1;
+        return -1;
+    }
+    //数据锁定
+    if (get_torget_data(new_data, data_tok, old_data, sizeof(data_tok) / sizeof(data_t)) == -1)
+    {
+        new_data->classes = -1;
+        return -1;
+    }
+    //数据处理
+    if (data_disposal(move, new_data) == -1)
+    {
+        return -1;
+    }
+    return 0;
+}
 #endif

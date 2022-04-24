@@ -57,4 +57,6 @@ extern int tokdata(char* read_buf, data_t* data_buf);
 extern int get_torget_data(data_t* new_data, data_t* data_buf, data_t* olddata, int const data_buf_len);
 //数据的转换
 extern int data_disposal(move_t* move, data_t* const data);
+//数据的读取到转换总合
+extern int data_readtodisp(data_t* new_data, data_t* old_data, char* const exp_file_path, move_t* move);
 #endif
