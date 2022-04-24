@@ -27,8 +27,8 @@
 #define X_OVERLOOK_K 0.12 //图像中心点x坐标无动作范围
 #define LANGUAGE ZH //设置信息输出的语言：EH/ZH
 #define TIME_DIST 0.5 //目标在图像内可允许移动的最大距离
-#define YOLO_RUNS_DETECT_PATH "/home/xyd/workspace/yolov5/runs/detect/"
-#define PRINTF_SWITCH
+#define YOLO_RUNS_DETECT_PATH "/home/nuc11/workspace/yolov5/runs/detect/"
+// #define PRINTF_SWITCH
 
 //存放读取到的数据结构体
 typedef struct dataest

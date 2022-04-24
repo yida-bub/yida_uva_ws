@@ -32,8 +32,11 @@ int main(int argc, char **argv)
 
 	while (ros::ok())
 	{
-		data_readtodisp(new_data, old_data, exp_file_path, move);
-		printf("x_vel:%lf  y_vel:%lf  z_vel:%lf  yaw:%lf\n", move->x_vel, move->y_vel, move->z_vel, move->yawr);
+		if(data_readtodisp(new_data, old_data, exp_file_path, move) == 0){
+			printf("x_vel:%lf  y_vel:%lf  z_vel:%lf  yaw:%lf\n", move->x_vel, move->y_vel, move->z_vel, move->yawr);
+		}else{
+			continue;
+		}
 
 		// 按照循环频率延时
 		printf("\n");
