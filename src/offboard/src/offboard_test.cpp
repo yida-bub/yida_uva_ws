@@ -43,7 +43,9 @@ void rcin_fun(const mavros_msgs::RCIn::ConstPtr &msg){
 	rcin_channel = *msg;
 	if(rcin_channel.channels[6-1] >= 1500){
 		step_state = false;
+        // printf("step_state false");
 	}else{
+        // printf("step_state true");
 		step_state = true;
 	}
 }
@@ -57,24 +59,20 @@ void position_control_body_vxyzyawr(double const vx, double const vy, double con
 {
 	velocity_msg.coordinate_frame = mavros_msgs::PositionTarget::FRAME_BODY_NED;
 	velocity_msg.type_mask = 0b011111000111;
-    /*
-    velocity_msg.type_mask =    mavros_msgs::PositionTarget::IGNORE_PX | // Position ignore flags 位置
-                                mavros_msgs::PositionTarget::IGNORE_PY |
-                                mavros_msgs::PositionTarget::IGNORE_PZ |
-                                mavros_msgs::PositionTarget::IGNORE_VX | //Velocity vector ignore flags 速度
-                                mavros_msgs::PositionTarget::IGNORE_VY |
-                                mavros_msgs::PositionTarget::IGNORE_VZ |
-                                mavros_msgs::PositionTarget::IGNORE_AFX | // Acceleration/Force vector ignore flags 加速度
-                                mavros_msgs::PositionTarget::IGNORE_AFY |
-                                mavros_msgs::PositionTarget::IGNORE_AFZ |
-                                mavros_msgs::PositionTarget::FORCE |
-                                /mavros_msgs::PositionTarget::IGNORE_YAW  //偏航
-                                mavros_msgs::PositionTarget::IGNORE_YAW_RATE //偏航率
-    */
 	velocity_msg.velocity.x = vx;
 	velocity_msg.velocity.y = vy;
 	velocity_msg.velocity.z = vz;
     velocity_msg.yaw_rate = yawr;
+	velocity_msg.header.stamp = ros::Time::now();
+}
+// body - xyz位置，偏航度
+void position_control_bady_xyzyaw(double const x, double const y, double const z, float const yaw){
+	velocity_msg.coordinate_frame = mavros_msgs::PositionTarget::FRAME_BODY_NED;
+	velocity_msg.type_mask = 0b101111111000;
+	velocity_msg.position.x = x;
+	velocity_msg.position.y = y;
+	velocity_msg.position.z = z;
+	velocity_msg.yaw = yaw;
 	velocity_msg.header.stamp = ros::Time::now();
 }
 // home - xyz位置，偏航度
@@ -87,14 +85,14 @@ void position_control_local_xyzyaw(double const x, double const y, double const 
 	velocity_msg.yaw = yaw;
 	velocity_msg.header.stamp = ros::Time::now();
 }
-// body - xyz位置，偏航度
-void position_control_bady_xyzyaw(double const x, double const y, double const z, float const yaw){
-	velocity_msg.coordinate_frame = mavros_msgs::PositionTarget::FRAME_BODY_NED;
-	velocity_msg.type_mask = 0b101111111000;
+// home - xyz位置，偏航sudu
+void position_control_local_xyzyawr(double const x, double const y, double const z, float const yawr){
+	velocity_msg.coordinate_frame = mavros_msgs::PositionTarget::FRAME_LOCAL_NED;
+	velocity_msg.type_mask = 0b011111111000;
 	velocity_msg.position.x = x;
 	velocity_msg.position.y = y;
 	velocity_msg.position.z = z;
-	velocity_msg.yaw = yaw;
+	velocity_msg.yaw_rate = yawr;
 	velocity_msg.header.stamp = ros::Time::now();
 }
 
@@ -110,7 +108,7 @@ int main(int argc, char **argv)
 
     ros::Publisher local_position_pub = nh.advertise<mavros_msgs::PositionTarget>("mavros/setpoint_raw/local", 10);
     ros::Subscriber high_sub = nh.subscribe<geometry_msgs::PoseStamped>("/mavros/local_position/pose", 10, high_fun);
-	ros::Publisher local_rc_in = nh.advertise<mavros_msgs::RCIn>("/mavros/rc/in", 10, rcin_fun);
+	ros::Subscriber local_rc_in = nh.subscribe<mavros_msgs::RCIn>("/mavros/rc/in", 10, rcin_fun);
     
     //the setpoint publishing rate MUST be faster than 2Hz
     ros::Rate rate(20.0);
@@ -176,16 +174,17 @@ int main(int argc, char **argv)
                 uva_task_stat = TAKOFF;
             }
         }
+        if (!step_state) //6通道打开，退出程序
+        {
+            printf("Program EXIT !!!");
+            return 0;
+        }
         //保持高度
         if((fabs(high.pose.position.z - home_high) <= 2.7 || fabs(high.pose.position.z - home_high) >= 3.5) && uva_task_stat != TAKOFF){
-            position_control_local_xyzyaw(0,0,3,0);
+            position_control_local_xyzyawr(0,0,3,0);
             local_position_pub.publish(velocity_msg);
             ros::spinOnce();
             rate.sleep();
-            continue;
-        }
-        if (!step_state) //6通道打开，暂停程序
-        {
             continue;
         }
         /*
@@ -201,7 +200,7 @@ int main(int argc, char **argv)
         switch(uva_task_stat){
             case TAKOFF: //起飞
                 // position_control_local_zyaw(3,0);
-                position_control_local_xyzyaw(0,0,3,0);
+                position_control_local_xyzyawr(0,0,3,0);
                 local_position_pub.publish(velocity_msg);
                 // pose_control(0,0,TAKOFF_HIGH);
                 // local_pos_pub.publish(pose); 
