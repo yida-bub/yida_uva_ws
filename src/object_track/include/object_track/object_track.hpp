@@ -30,6 +30,7 @@
 #define YOLO_RUNS_DETECT_PATH "/home/nuc11/workspace/yolov5/runs/detect/"
 // #define PRINTF_SWITCH
 
+//起飞高度，飞行高度
 #define TAKOFF_HIGH 3
 
 //存放读取到的数据结构体
@@ -49,6 +50,8 @@ typedef struct moveest
 	double yawr;	  //对应 data 的 x_point, 无人机航向角，及偏航
 } move_t;
 
+//数据初始化
+extern int struct_init(data_t* new_data, data_t* old_data, move_t* move);
 //获取最新的文件或目录，输出参数 newfile_path
 extern int getnewfile(char* const path, char* newfile_path);
 //打开，读取数据，失败返回-1

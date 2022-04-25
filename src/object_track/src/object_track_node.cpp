@@ -12,7 +12,8 @@ enum STEP
 	TASK_FIFTH,	 //任务5
 	TASK_SIXTH,	 //任务6
 } step_flow;
-
+//任务运行状态
+bool step_state = true;
 // ROS实例
 mavros_msgs::State current_state;		  //订阅消息体类型的变量
 geometry_msgs::PoseStamped high;		  //订阅，主要获取无人机的z轴高度信息
@@ -35,8 +36,17 @@ void high_fun(const geometry_msgs::PoseStamped::ConstPtr &msg)
 {
 	high = *msg;
 }
-void rcin_fun(const mavros_msgs::RCIn::ConstPtr &msg){
+void rcin_fun(const mavros_msgs::RCInConstPtr msg)
+{
 	rcin_channel = *msg;
+	if (rcin_channel.channels[6 - 1] >= 1500)
+	{
+		step_state = false;
+	}
+	else
+	{
+		step_state = true;
+	}
 }
 void pose_control(double const x, double const y, double const z)
 {
@@ -44,30 +54,39 @@ void pose_control(double const x, double const y, double const z)
 	pose.pose.position.y = y;
 	pose.pose.position.z = z;
 }
-// 速度、偏航角控制
-void position_control_xyz(double const z, double const vx, float const yawr)
+// body - xyz速度，偏航速度
+void position_control_body_vxyzyawr(double const vx, double const vy, double const vz, float const yawr)
 {
 	velocity_msg.coordinate_frame = mavros_msgs::PositionTarget::FRAME_BODY_NED;
-	velocity_msg.type_mask = mavros_msgs::PositionTarget::IGNORE_PX | // Position ignore flags 位置
-							 mavros_msgs::PositionTarget::IGNORE_PY |
-							 //  mavros_msgs::PositionTarget::IGNORE_PZ |
-							 // mavros_msgs::PositionTarget::IGNORE_VX | //Velocity vector ignore flags 速度
-							 mavros_msgs::PositionTarget::IGNORE_VY |
-							 mavros_msgs::PositionTarget::IGNORE_VZ |
-							 mavros_msgs::PositionTarget::IGNORE_AFX | // Acceleration/Force vector ignore flags 加速度
-							 mavros_msgs::PositionTarget::IGNORE_AFY |
-							 mavros_msgs::PositionTarget::IGNORE_AFZ |
-							 mavros_msgs::PositionTarget::FORCE |
-							 // mavros_msgs::PositionTarget::IGNORE_YAW  //偏航
-							 mavros_msgs::PositionTarget::IGNORE_YAW_RATE //偏航率
-		;
+	velocity_msg.type_mask = 0b011111000111;
 	velocity_msg.velocity.x = vx;
-	// velocity_msg.yaw = yaw;
+	velocity_msg.velocity.y = vy;
+	velocity_msg.velocity.z = vz;
 	velocity_msg.yaw_rate = yawr;
-	velocity_msg.position.z = z;
 	velocity_msg.header.stamp = ros::Time::now();
 }
-
+// body - xyz位置，偏航度
+void position_control_bady_xyzyaw(double const x, double const y, double const z, float const yaw)
+{
+	velocity_msg.coordinate_frame = mavros_msgs::PositionTarget::FRAME_BODY_NED;
+	velocity_msg.type_mask = 0b101111111000;
+	velocity_msg.position.x = x;
+	velocity_msg.position.y = y;
+	velocity_msg.position.z = z;
+	velocity_msg.yaw = yaw;
+	velocity_msg.header.stamp = ros::Time::now();
+}
+// home - xyz位置，偏航度
+void position_control_local_xyzyaw(double const x, double const y, double const z, float const yaw)
+{
+	velocity_msg.coordinate_frame = mavros_msgs::PositionTarget::FRAME_LOCAL_NED;
+	velocity_msg.type_mask = 0b101111111000;
+	velocity_msg.position.x = x;
+	velocity_msg.position.y = y;
+	velocity_msg.position.z = z;
+	velocity_msg.yaw = yaw;
+	velocity_msg.header.stamp = ros::Time::now();
+}
 int main(int argc, char **argv)
 {
 	//组织数据文件的路径，获取最新的labels文件
@@ -81,13 +100,14 @@ int main(int argc, char **argv)
 	data_t *old_data = (data_t *)(malloc(sizeof(data_t)));
 	move_t *move = (move_t *)(malloc(sizeof(move_t)));
 
-	// new_data的初始化，假设刚开始的目标点在图像中心
-	new_data->classes = 0;
-	new_data->x_point = 0.5;
-	new_data->y_point = 0.5;
-	new_data->x_len = 0.1;
-	new_data->y_len = 0.2;
-	*old_data = *new_data;
+	// // new_data的初始化，假设刚开始的目标点在图像中心
+	// new_data->classes = 0;
+	// new_data->x_point = 0.5;
+	// new_data->y_point = 0.5;
+	// new_data->x_len = 0.1;
+	// new_data->y_len = 0.2;
+	// *old_data = *new_data;
+	struct_init(new_data, old_data, move);
 
 	// ROS节点初始化
 	ros::init(argc, argv, "object_track_main");
@@ -100,7 +120,7 @@ int main(int argc, char **argv)
 	ros::ServiceClient set_mode_client = nh.serviceClient<mavros_msgs::SetMode>("mavros/set_mode");		//启动服务2
 	ros::Publisher local_position_pub = nh.advertise<mavros_msgs::PositionTarget>("mavros/setpoint_raw/local", 10);
 	ros::Subscriber high_sub = nh.subscribe<geometry_msgs::PoseStamped>("/mavros/local_position/pose", 10, high_fun);
-	ros::Publisher local_rc_in = nh.advertise<mavros_msgs::RCIn>("/mavros/rc/in", 10, rcin_fun);
+	ros::Subscriber local_rc_in = nh.subscribe<mavros_msgs::RCIn>("/mavros/rc/in", 10, rcin_fun);
 	// 设置循环的频率
 	ros::Rate rate(20.0);
 
@@ -118,14 +138,13 @@ int main(int argc, char **argv)
 
 	offb_set_mode.request.custom_mode = "OFFBOARD"; //模式切为 offboard
 	arm_cmd.request.value = true;					//解锁
-													//起飞点高度记录
-	double home_high = high.pose.position.z;
-	ROS_INFO("home_high = %lf", home_high);
+	double home_high = high.pose.position.z;		//起飞点高度记录
+	ROS_INFO("home_high = %lf", home_high);			//打印输出当前高度
 	//更新时间
 	ros::Time last_request = ros::Time::now();
 	ros::Time step_time = ros::Time::now();
 
-	int uva_task_stat = TAKOFF; //当前任务步骤
+	int uva_task_stat = TAKOFF; //当前任务步骤标志
 
 	while (ros::ok())
 	{
@@ -153,9 +172,18 @@ int main(int argc, char **argv)
 				uva_task_stat = TAKOFF;
 			}
 		}
+		//保持飞行高度
+		if ((fabs(high.pose.position.z - home_high) <= TAKOFF_HIGH - 0.3 || fabs(high.pose.position.z - home_high) >= TAKOFF_HIGH + 0.3) && uva_task_stat != TAKOFF)
+		{
+			position_control_local_xyzyaw(0, 0, 3, 0);
+			local_position_pub.publish(velocity_msg);
+			ros::spinOnce();
+			rate.sleep();
+			continue;
+		}
 		switch (uva_task_stat)
 		{
-		case TAKOFF:
+		case TAKOFF: //起飞任务
 			pose_control(0, 0, TAKOFF_HIGH);
 			local_pos_pub.publish(pose);
 			if (fabs(high.pose.position.z - home_high) >= TAKOFF_HIGH * 0.9)
@@ -165,19 +193,17 @@ int main(int argc, char **argv)
 				ROS_INFO("GO_OBJECT_TASK !!!");
 			}
 			break;
-		case OBJECT_TASK:
+		case OBJECT_TASK: //目标识别跟踪任务
 			if (data_readtodisp(new_data, old_data, exp_file_path, move) == -1)
 			{
 				continue;
 			}
 			ROS_INFO("x_vel:%lf  y_vel:%lf  z_vel:%lf  yaw:%lf\n", move->x_vel, move->y_vel, move->z_vel, move->yawr);
-			position_control_xyz(TAKOFF_HIGH, move->x_vel, move->yawr); //TAKOFF_HIGH 不行，需要发布不能以机体为坐标为点的位置
-            local_position_pub.publish(velocity_msg); //尝试发布两个不同的local_position_pub
-			
-			if(rcin_channel.channels[5] >= 1250){
-				//直接拿取遥控器的输入，来退出offboard模式
-				//需要查一下它的消息结构！！！
-				//不发布任何指令，可以直接return退出程序，转手动控制
+			position_control_body_vxyzyawr(move->x_vel, move->y_vel, move->z_vel, move->yawr);
+			local_position_pub.publish(velocity_msg);
+			if (!step_state) // 6通道打开，退出程序
+			{
+				return 0;
 			}
 			break;
 		}

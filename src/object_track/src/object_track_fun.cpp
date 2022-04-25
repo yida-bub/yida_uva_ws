@@ -1,7 +1,21 @@
 #ifndef _OBJECT_TRACK_FUN_
 #define _OBJECT_TRACK_FUN_
 #include "object_track/object_track.hpp"
-
+int struct_init(data_t* new_data, data_t* old_data, move_t* move){
+    // new_data的初始化，假设刚开始的目标点在图像中心
+	new_data->classes = 0;
+	new_data->x_point = 0.5;
+	new_data->y_point = 0.5;
+	new_data->x_len = 0.1;
+	new_data->y_len = 0.2;
+	*old_data = *new_data;
+    //初始化move
+    move->x_vel = 0;
+    move->y_vel = 0;
+    move->z_vel = 0;
+    move->yawr = 0;
+    return 0;
+}
 int getnewfile(char *const path, char *newfile_path)
 {
     DIR *dir = opendir(path);
@@ -181,6 +195,12 @@ int data_disposal(move_t *move, data_t *const data)
     double nva_ground_tall = 0.0;                                                            //无人机离地面的高度
     double img_tall_ang = img_tall * vide_angle / sqrt(pow(img_tall, 2) + pow(img_wide, 2)); //图像高度的视野角
     double img_wide_ang = img_wide * vide_angle / sqrt(pow(img_tall, 2) + pow(img_wide, 2)); //图像宽度的视野角
+
+    //初始化move
+    move->x_vel = 0;
+    move->y_vel = 0;
+    move->z_vel = 0;
+    move->yawr = 0;
 
     double k = 0.5;
     if (data->y_point - k > -Y_OVERLOOK_K && data->y_point - k < Y_OVERLOOK_K)

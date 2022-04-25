@@ -156,6 +156,9 @@ target_link_libraries(takeoff ${catkin_LIBRARIES})
 add_executable(velpoes_control src/velpoes_control.cpp)
 target_link_libraries(velpoes_control ${catkin_LIBRARIES})
 
+add_executable(offboard_test src/offboard_test.cpp)
+target_link_libraries(offboard_test ${catkin_LIBRARIES})
+
 #############
 ## Install ##
 #############
