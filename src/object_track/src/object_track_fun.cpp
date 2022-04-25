@@ -210,7 +210,7 @@ int data_disposal(move_t *move, data_t *const data)
     // printf("xv: %lf\tyaw: %lf\n", move->x_vel, move->yaw);
     return 0;
 }
-int data_readtodisp(data_t* new_data, data_t* old_data, char* const exp_file_path, move_t* move)
+int data_readtodisp(data_t *new_data, data_t *old_data, char *const exp_file_path, move_t *move)
 {
     if (new_data->classes == 0)
     {
@@ -250,4 +250,5 @@ int data_readtodisp(data_t* new_data, data_t* old_data, char* const exp_file_pat
     }
     return 0;
 }
+
 #endif

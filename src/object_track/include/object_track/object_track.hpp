@@ -12,13 +12,13 @@
 #include <sys/types.h>
 #include <ros/ros.h>
 
-#include <ros/ros.h>
 #include <geometry_msgs/PoseStamped.h>  //发布的消息体对应的头文件，该消息体的类型为geometry_msgs：：PoseStamped
 #include <mavros_msgs/CommandBool.h>  //CommandBool服务的头文件，该服务的类型为mavros_msgs：：CommandBool
 #include <mavros_msgs/SetMode.h>     //SetMode服务的头文件，该服务的类型为mavros_msgs：：SetMode
 #include <mavros_msgs/State.h>  //订阅的消息体的头文件，该消息体的类型为mavros_msgs：：State
 #include <mavros_msgs/PositionTarget.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <mavros_msgs/RCIn.h>
 
 #define PI 3.1415926535898
 #define ANGTORAD_COE (PI/180)
@@ -29,6 +29,8 @@
 #define TIME_DIST 0.5 //目标在图像内可允许移动的最大距离
 #define YOLO_RUNS_DETECT_PATH "/home/nuc11/workspace/yolov5/runs/detect/"
 // #define PRINTF_SWITCH
+
+#define TAKOFF_HIGH 3
 
 //存放读取到的数据结构体
 typedef struct dataest
@@ -59,4 +61,13 @@ extern int get_torget_data(data_t* new_data, data_t* data_buf, data_t* olddata, 
 extern int data_disposal(move_t* move, data_t* const data);
 //数据的读取到转换总合
 extern int data_readtodisp(data_t* new_data, data_t* old_data, char* const exp_file_path, move_t* move);
+
+//订阅mavros_msgs::State消息，回调函数
+extern void state_cb(const mavros_msgs::State::ConstPtr& msg);
+//订阅geometry_msgs::PoseStamped消息，回调函数
+extern void high_fun(const geometry_msgs::PoseStamped::ConstPtr& msg);
+//位置控制
+extern void pose_control(double const x, double const y, double const z);
+// 速度、偏航角控制
+extern void position_control_xyz(double const vx, double const vy, float const yaw);
 #endif
