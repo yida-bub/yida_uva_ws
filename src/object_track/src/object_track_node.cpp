@@ -66,14 +66,14 @@ void position_control_body_vxyzyawr(double const vx, double const vy, double con
 	velocity_msg.header.stamp = ros::Time::now();
 }
 // body - xyz位置，偏航度
-void position_control_body_xyzyaw(double const x, double const y, double const z, float const yaw)
+void position_control_body_xyzyawr(double const x, double const y, double const z, float const yawr)
 {
 	velocity_msg.coordinate_frame = mavros_msgs::PositionTarget::FRAME_BODY_NED;
-	velocity_msg.type_mask = 0b101111111000;
+	velocity_msg.type_mask = 0b011111111000;
 	velocity_msg.position.x = x;
 	velocity_msg.position.y = y;
 	velocity_msg.position.z = z;
-	velocity_msg.yaw = yaw;
+	velocity_msg.yaw_rate = yawr;
 	velocity_msg.header.stamp = ros::Time::now();
 }
 // home - xyz位置，偏航度
@@ -105,7 +105,7 @@ int main(int argc, char **argv)
 	char exp_file_path[128] = {};
 	getnewfile(path, exp_file_path);
 	strcat(exp_file_path, "/labels/");
-	ROS_INFO("exp path: %s\n", exp_file_path);
+	printf(">>> exp path: %s\n", exp_file_path);
 
 	data_t *new_data = (data_t *)(malloc(sizeof(data_t)));
 	data_t *old_data = (data_t *)(malloc(sizeof(data_t)));
@@ -126,7 +126,7 @@ int main(int argc, char **argv)
 	ros::Subscriber high_sub = nh.subscribe<geometry_msgs::PoseStamped>("/mavros/local_position/pose", 10, high_fun);
 	ros::Subscriber local_rc_in = nh.subscribe<mavros_msgs::RCIn>("/mavros/rc/in", 10, rcin_fun);
 	// 设置循环的频率
-	ros::Rate rate(20.0);
+	ros::Rate rate(20.0);	
 
 	// 等待飞控连接mavros，current_state是我们订阅的mavros的状态，连接成功在跳出循环
 	ROS_INFO("connected......");
@@ -185,15 +185,17 @@ int main(int argc, char **argv)
         if((high.pose.position.z - home_high <= TAKOFF_HIGH-0.5 || high.pose.position.z - home_high >= TAKOFF_HIGH+0.5) && uva_task_stat != TAKOFF_TASK){
             position_control_local_xyzyawr(high.pose.position.x,high.pose.position.y,TAKOFF_HIGH+home_high,0);
             local_position_pub.publish(velocity_msg);
-            // printf("high!!!\n");
+            printf("high!!!\n");
             ros::spinOnce();
             rate.sleep();
             continue;
         }
 		switch (uva_task_stat)
 		{
-		case TAKOFF_TASK: //起飞任务
-			position_control_local_xyzyawr(0, 0, TAKOFF_HIGH+home_high, 0);
+		case OBJECT_TASK: //起飞任务
+		// case TAKOFF_TASK: //起飞任务
+			// position_control_local_xyzyawr(0, 0, TAKOFF_HIGH+home_high, 0);
+			position_control_body_xyzyawr(0, 0, TAKOFF_HIGH+home_high, 0);
 			local_position_pub.publish(velocity_msg);
 			if (high.pose.position.z - home_high >= TAKOFF_HIGH * 0.9)
 			{
@@ -202,12 +204,14 @@ int main(int argc, char **argv)
 				ROS_INFO("GO_OBJECT_TASK !!!");
 			}
 			break;
-		case OBJECT_TASK: //目标识别跟踪任务
+		case TAKOFF_TASK: //目标识别跟踪任务
+		// case OBJECT_TASK: //目标识别跟踪任务
 			if (data_readtodisp(new_data, old_data, exp_file_path, move) == -1)
 			{
 				continue;
 			}
-			ROS_INFO("x_vel:%lf  y_vel:%lf  z_vel:%lf  yaw:%lf\n", move->x_vel, move->y_vel, move->z_vel, move->yawr);
+			ROS_INFO("x_vel:%lf  yaw:%lf\n", move->x_vel, move->yawr);
+			// ROS_INFO("x_vel:%lf  y_vel:%lf  z_vel:%lf  yaw:%lf\n", move->x_vel, move->y_vel, move->z_vel, move->yawr);
 			position_control_body_vxyzyawr(move->x_vel, move->y_vel, move->z_vel, move->yawr);
 			local_position_pub.publish(velocity_msg);
 			break;

@@ -23,13 +23,13 @@
 #define PI 3.1415926535898
 #define ANGTORAD_COE (PI/180)
 #define RADTOANG_COE (180/PI)
-#define Y_OVERLOOK_K 0.20 //图像中心点y坐标无动作范围	
+#define Y_OVERLOOK_K 0.10 //图像中心点y坐标无动作范围	
 #define X_OVERLOOK_K 0.12 //图像中心点x坐标无动作范围
 #define LANGUAGE ZH //设置信息输出的语言：EH/ZH
-#define TIME_DIST 0.5 //目标在图像内可允许移动的最大距离
+#define TIME_DIST 0.25 //目标在图像内可允许移动的最大距离
 #define YOLO_RUNS_DETECT_PATH "/home/nuc11/workspace/yolov5/runs/detect/"
 // #define YOLO_RUNS_DETECT_PATH "/home/xyd/workspace/yolov5/runs/detect/"
-// #define PRINTF_SWITCH
+#define PRINTF_SWITCH //打印输出开关
 
 //起飞高度，飞行高度
 #define TAKOFF_HIGH 3 

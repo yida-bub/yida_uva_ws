@@ -9,7 +9,7 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <mavros_msgs/RCIn.h>
  
-#define TAKOFF_HIGH 3
+#define TAKOFF_HIGH 5
 
 enum STEP{
     PREPARE, //准备
@@ -123,7 +123,7 @@ int main(int argc, char **argv)
     }
     ROS_INFO("connected_ok!");
  
-    //先实例化一个geometry_msgs::PoseStamped类型的对象，并对其赋值，最后将其发布出去
+    // //先实例化一个geometry_msgs::PoseStamped类型的对象，并对其赋值，最后将其发布出去
     // pose_control(0,0,TAKOFF);
     // local_pos_pub.publish(pose); 
 
@@ -201,7 +201,7 @@ int main(int argc, char **argv)
         switch(uva_task_stat){
             case TAKOFF: //起飞
                 // position_control_local_zyaw(3,0);
-                position_control_local_xyzyawr(0,0,TAKOFF_HIGH,0);
+                position_control_local_xyzyawr(0,0,TAKOFF_HIGH+home_high,0);
                 local_position_pub.publish(velocity_msg);
                 // pose_control(0,0,TAKOFF_HIGH);
                 // local_pos_pub.publish(pose); 

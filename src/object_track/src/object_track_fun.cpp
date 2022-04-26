@@ -89,7 +89,7 @@ int readfiledata(char *const path, char *read_buf, int read_len)
 int tokdata(char *read_buf, data_t *data_buf)
 {
     //对数据进行拆分，以'\n'分割，存入buf_data_link字符串数组中
-    char buf_data_link[32][64] = {};
+    char buf_data_link[64][64] = {};
     char *str = strtok(read_buf, "\n"); //临时存储分割后的字符串
     if (str == NULL)
     {
@@ -105,6 +105,9 @@ int tokdata(char *read_buf, data_t *data_buf)
         linknum++;
         str = strtok(NULL, "\n");
     }
+    #ifdef PRINTF_SWITCH
+    printf("n _ok!\n");
+    #endif
 
     // printf("\n");
     //遍历输出buf_data_link
@@ -127,13 +130,12 @@ int tokdata(char *read_buf, data_t *data_buf)
             break;
         }
     }
+
+    #ifdef PRINTF_SWITCH
+    printf("ko_ok!\n");
+    #endif
     //将检测到的目标遍历输出每个数据的信息，通过buf_data
 
-    // #ifdef EN
-    // printf(">>> Data read:\n");
-    // #else
-    // printf(">>> 读取到的数据\n");
-    // #endif
 #ifdef PRINTF_SWITCH
     // 遍历输出所读取到的数据
     printf(">>> data_tok:\n");
@@ -209,12 +211,12 @@ int data_disposal(move_t *move, data_t *const data)
     }
     else if (data->y_point - k > Y_OVERLOOK_K)
     { //目标在图像中心的下方，后退
-        move->x_vel = -((data->y_point - k)*5+1);
+        move->x_vel = -(fabs(data->y_point - k)*5+1);
         // move->x_vel = -1;
     }
     else if (data->y_point - k < -Y_OVERLOOK_K)
     { //目标在图像中心的上方，前进
-        move->x_vel = (data->y_point - k)*5+1;
+        move->x_vel = fabs(data->y_point - k)*5+1;
         // move->x_vel = 1;
     }
     if (data->x_point - k > -X_OVERLOOK_K && data->x_point - k < X_OVERLOOK_K)
@@ -247,6 +249,9 @@ int data_readtodisp(data_t *new_data, data_t *old_data, char *const exp_file_pat
         new_data->classes = -1;
         return -1;
     }
+    #ifdef PRINTF_SWITCH
+    printf("getfile_ok!\n");
+    #endif
     //读取文件
     char data_buf[128] = {};
     if (readfiledata(data_path, data_buf, sizeof(data_buf)) == -1)
@@ -254,6 +259,9 @@ int data_readtodisp(data_t *new_data, data_t *old_data, char *const exp_file_pat
         new_data->classes = -1;
         return -1;
     }
+    #ifdef PRINTF_SWITCH
+    // printf("readfile_ok!\n");
+    #endif
     //分割数据
     data_t data_tok[32];
     if (tokdata(data_buf, data_tok) == -1)
@@ -261,17 +269,26 @@ int data_readtodisp(data_t *new_data, data_t *old_data, char *const exp_file_pat
         new_data->classes = -1;
         return -1;
     }
+    #ifdef PRINTF_SWITCH
+    // printf("tok_ok!\n");
+    #endif
     //数据锁定
     if (get_torget_data(new_data, data_tok, old_data, sizeof(data_tok) / sizeof(data_t)) == -1)
     {
         new_data->classes = -1;
         return -1;
     }
+    #ifdef PRINTF_SWITCH
+    // printf("torget_ok!\n");
+    #endif
     //数据处理
     if (data_disposal(move, new_data) == -1)
     {
         return -1;
     }
+    #ifdef PRINTF_SWITCH
+    // printf("disp_ok!\n");
+    #endif
     return 0;
 }
 
