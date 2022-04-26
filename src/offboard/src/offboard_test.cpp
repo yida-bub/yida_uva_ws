@@ -180,9 +180,10 @@ int main(int argc, char **argv)
             return 0;
         }
         //保持高度
-        if((fabs(high.pose.position.z - home_high) <= 2.7 || fabs(high.pose.position.z - home_high) >= 3.5) && uva_task_stat != TAKOFF){
-            position_control_local_xyzyawr(0,0,3,0);
+        if((fabs(high.pose.position.z - home_high) <= TAKOFF_HIGH+home_high-0.5 || fabs(high.pose.position.z - home_high) >= TAKOFF_HIGH+home_high+0.5) && uva_task_stat != TAKOFF){
+            position_control_local_xyzyawr(high.pose.position.x,high.pose.position.y,TAKOFF_HIGH+home_high,0);
             local_position_pub.publish(velocity_msg);
+            // printf("high!!!\n");
             ros::spinOnce();
             rate.sleep();
             continue;
@@ -200,7 +201,7 @@ int main(int argc, char **argv)
         switch(uva_task_stat){
             case TAKOFF: //起飞
                 // position_control_local_zyaw(3,0);
-                position_control_local_xyzyawr(0,0,3,0);
+                position_control_local_xyzyawr(0,0,TAKOFF_HIGH,0);
                 local_position_pub.publish(velocity_msg);
                 // pose_control(0,0,TAKOFF_HIGH);
                 // local_pos_pub.publish(pose); 
@@ -241,7 +242,7 @@ int main(int argc, char **argv)
                 }
                 break;
             case TASK_FIFTH: //返回home起飞点
-                position_control_local_xyzyaw(0,0,3,0);
+                position_control_local_xyzyaw(0,0,TAKOFF_HIGH,0);
                 local_position_pub.publish(pose);
                 // if(ros::Time::now() - step_time >= ros::Duration(10.0)){
                 //     uva_task_stat = TASK_SIXTH;

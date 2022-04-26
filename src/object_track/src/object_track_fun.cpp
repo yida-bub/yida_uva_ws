@@ -209,11 +209,11 @@ int data_disposal(move_t *move, data_t *const data)
     }
     else if (data->y_point - k > Y_OVERLOOK_K)
     { //目标在图像中心的下方，后退
-        move->x_vel = -1;
+        move->x_vel = -((data->y_point - k)*5+1);
     }
     else if (data->y_point - k < -Y_OVERLOOK_K)
     { //目标在图像中心的上方，前进
-        move->x_vel = 1;
+        move->x_vel = (data->y_point - k)*5+1;
     }
     if (data->x_point - k > -X_OVERLOOK_K && data->x_point - k < X_OVERLOOK_K)
     { //目标在图像中心的一定范围内，无动作
@@ -221,11 +221,13 @@ int data_disposal(move_t *move, data_t *const data)
     }
     else if (data->x_point - k > X_OVERLOOK_K)
     { //目标在图像中心的右边，顺序针偏航
-        move->yawr = 0.25;
+        move->yawr = -0.25;
+        // move->yawr = -((data->x_point - k)*5+1);
     }
     else if (data->x_point - k < -X_OVERLOOK_K)
     { //目标在图像中心的左边，逆时针偏航
-        move->yawr = -0.25;
+        move->yawr = 0.25;
+        // move->yawr = (data->x_point - k)*5+1;
     }
     // printf("xv: %lf\tyaw: %lf\n", move->x_vel, move->yaw);
     return 0;

@@ -137,8 +137,8 @@ int main(int argc, char **argv)
 	}
 	ROS_INFO("connected_ok!");
 	//首次发布位置，起飞
-	pose_control(0, 0, TAKOFF_HIGH);
-	local_pos_pub.publish(pose);
+	// pose_control(0, 0, TAKOFF_HIGH);
+	// local_pos_pub.publish(pose);
 
 	offb_set_mode.request.custom_mode = "OFFBOARD"; //模式切为 offboard
 	arm_cmd.request.value = true;					//解锁
@@ -182,20 +182,20 @@ int main(int argc, char **argv)
 			return 0;
 		}
 		//保持飞行高度
-		if ((fabs(high.pose.position.z - home_high) <= TAKOFF_HIGH - 0.3 || fabs(high.pose.position.z - home_high) >= TAKOFF_HIGH + 0.3) && uva_task_stat != TAKOFF_TASK)
-		{
-			position_control_local_xyzyawr(high.pose.position.x, high.pose.position.y, TAKOFF_HIGH, 0);
-			local_position_pub.publish(velocity_msg);
-			ros::spinOnce();
-			rate.sleep();
-			continue;
-		}
+        if((fabs(high.pose.position.z - home_high) <= TAKOFF_HIGH+home_high-0.5 || fabs(high.pose.position.z - home_high) >= TAKOFF_HIGH+home_high+0.5) && uva_task_stat != TAKOFF_TASK){
+            position_control_local_xyzyawr(high.pose.position.x,high.pose.position.y,TAKOFF_HIGH+home_high,0);
+            local_position_pub.publish(velocity_msg);
+            // printf("high!!!\n");
+            ros::spinOnce();
+            rate.sleep();
+            continue;
+        }
 		switch (uva_task_stat)
 		{
 		case TAKOFF_TASK: //起飞任务
-			position_control_body_xyzyaw(0, 0, TAKOFF_HIGH, 0);
+			position_control_local_xyzyawr(0, 0, TAKOFF_HIGH+home_high, 0);
 			local_position_pub.publish(velocity_msg);
-			if (fabs(high.pose.position.z - home_high) >= TAKOFF_HIGH * 0.9)
+			if (fabs(high.pose.position.z - home_high) >= (TAKOFF_HIGH+home_high) * 0.9)
 			{
 				uva_task_stat = OBJECT_TASK;
 				step_time = ros::Time::now();
