@@ -178,11 +178,11 @@ int main(int argc, char **argv)
 		}
 		if (!step_state) // 6通道打开，强制退出程序
 		{
-			printf("Program EXIT !!!");
+			printf("Program EXIT !!!\n");
 			return 0;
 		}
 		//保持飞行高度
-        if((fabs(high.pose.position.z - home_high) <= TAKOFF_HIGH+home_high-0.5 || fabs(high.pose.position.z - home_high) >= TAKOFF_HIGH+home_high+0.5) && uva_task_stat != TAKOFF_TASK){
+        if((high.pose.position.z - home_high <= TAKOFF_HIGH-0.5 || high.pose.position.z - home_high >= TAKOFF_HIGH+0.5) && uva_task_stat != TAKOFF_TASK){
             position_control_local_xyzyawr(high.pose.position.x,high.pose.position.y,TAKOFF_HIGH+home_high,0);
             local_position_pub.publish(velocity_msg);
             // printf("high!!!\n");
@@ -195,7 +195,7 @@ int main(int argc, char **argv)
 		case TAKOFF_TASK: //起飞任务
 			position_control_local_xyzyawr(0, 0, TAKOFF_HIGH+home_high, 0);
 			local_position_pub.publish(velocity_msg);
-			if (fabs(high.pose.position.z - home_high) >= (TAKOFF_HIGH+home_high) * 0.9)
+			if (high.pose.position.z - home_high >= TAKOFF_HIGH * 0.9)
 			{
 				uva_task_stat = OBJECT_TASK;
 				step_time = ros::Time::now();

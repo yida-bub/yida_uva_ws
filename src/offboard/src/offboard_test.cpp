@@ -180,7 +180,7 @@ int main(int argc, char **argv)
             return 0;
         }
         //保持高度
-        if((fabs(high.pose.position.z - home_high) <= TAKOFF_HIGH+home_high-0.5 || fabs(high.pose.position.z - home_high) >= TAKOFF_HIGH+home_high+0.5) && uva_task_stat != TAKOFF){
+        if((fabs(high.pose.position.z - home_high) <= TAKOFF_HIGH-0.5 || fabs(high.pose.position.z - home_high) >= TAKOFF_HIGH+0.5) && uva_task_stat != TAKOFF){
             position_control_local_xyzyawr(high.pose.position.x,high.pose.position.y,TAKOFF_HIGH+home_high,0);
             local_position_pub.publish(velocity_msg);
             // printf("high!!!\n");
@@ -208,7 +208,7 @@ int main(int argc, char **argv)
 
                 // ROS_INFO("%lf\t%lf\n", high.pose.position.z, home_high);
                 // if(ros::Time::now() - step_time >= ros::Duration(10.0)){
-                if(fabs(high.pose.position.z - home_high) >= 3*0.9){
+                if(fabs(high.pose.position.z - home_high) >= TAKOFF_HIGH*0.9){
                     uva_task_stat = TASK_FIRST;
                     step_time = ros::Time::now();
                     ROS_INFO("GO_TASK_FIRST !!!");
