@@ -28,6 +28,7 @@
 #define LANGUAGE ZH //设置信息输出的语言：EH/ZH
 #define TIME_DIST 0.5 //目标在图像内可允许移动的最大距离
 #define YOLO_RUNS_DETECT_PATH "/home/nuc11/workspace/yolov5/runs/detect/"
+// #define YOLO_RUNS_DETECT_PATH "/home/xyd/workspace/yolov5/runs/detect/"
 // #define PRINTF_SWITCH
 
 //起飞高度，飞行高度
