@@ -9,7 +9,7 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <mavros_msgs/RCIn.h>
  
-#define TAKOFF_HIGH 5
+#define TAKOFF_HIGH 10
 
 enum STEP{
     PREPARE, //准备
@@ -66,13 +66,13 @@ void position_control_body_vxyzyawr(double const vx, double const vy, double con
 	velocity_msg.header.stamp = ros::Time::now();
 }
 // body - xyz位置，偏航度
-void position_control_bady_xyzyaw(double const x, double const y, double const z, float const yaw){
+void position_control_body_xyzyawr(double const x, double const y, double const z, float const yawr){
 	velocity_msg.coordinate_frame = mavros_msgs::PositionTarget::FRAME_BODY_NED;
-	velocity_msg.type_mask = 0b101111111000;
+	velocity_msg.type_mask = 0b011111111000;
 	velocity_msg.position.x = x;
 	velocity_msg.position.y = y;
 	velocity_msg.position.z = z;
-	velocity_msg.yaw = yaw;
+	velocity_msg.yaw_rate = yawr;
 	velocity_msg.header.stamp = ros::Time::now();
 }
 // home - xyz位置，偏航度
@@ -200,14 +200,8 @@ int main(int argc, char **argv)
         */
         switch(uva_task_stat){
             case TAKOFF: //起飞
-                // position_control_local_zyaw(3,0);
-                position_control_local_xyzyawr(0,0,TAKOFF_HIGH+home_high,0);
+                position_control_body_xyzyawr(0,0,TAKOFF_HIGH+home_high,0);
                 local_position_pub.publish(velocity_msg);
-                // pose_control(0,0,TAKOFF_HIGH);
-                // local_pos_pub.publish(pose); 
-
-                // ROS_INFO("%lf\t%lf\n", high.pose.position.z, home_high);
-                // if(ros::Time::now() - step_time >= ros::Duration(10.0)){
                 if(fabs(high.pose.position.z - home_high) >= TAKOFF_HIGH*0.9){
                     uva_task_stat = TASK_FIRST;
                     step_time = ros::Time::now();
@@ -242,7 +236,7 @@ int main(int argc, char **argv)
                 }
                 break;
             case TASK_FIFTH: //返回home起飞点
-                position_control_local_xyzyaw(0,0,TAKOFF_HIGH,0);
+                position_control_body_xyzyawr(0,0,TAKOFF_HIGH+home_high,0);
                 local_position_pub.publish(pose);
                 // if(ros::Time::now() - step_time >= ros::Duration(10.0)){
                 //     uva_task_stat = TASK_SIXTH;
