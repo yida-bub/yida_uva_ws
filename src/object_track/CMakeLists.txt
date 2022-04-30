@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(offboard)
+project(object_track)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -103,10 +103,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES offboard
-#  CATKIN_DEPENDS geometry_msgs mavros roscpp
-#  DEPENDS system_lib
+ INCLUDE_DIRS include
+ LIBRARIES object_track
+ CATKIN_DEPENDS geometry_msgs mavros roscpp
+ DEPENDS system_lib
 )
 
 ###########
@@ -116,13 +116,13 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include 
   ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/offboard.cpp
+#   src/${PROJECT_NAME}/object_track.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -133,7 +133,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/offboard_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/object_track_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -150,15 +150,11 @@ include_directories(
 #   ${catkin_LIBRARIES}
 # )
 
-add_executable(takeoff src/takeoff.cpp)
-target_link_libraries(takeoff ${catkin_LIBRARIES})
-
-add_executable(velpoes_control src/velpoes_control.cpp)
-target_link_libraries(velpoes_control ${catkin_LIBRARIES})
-
-add_executable(offboard_test src/offboard_test.cpp)
-target_link_libraries(offboard_test ${catkin_LIBRARIES})
-
+add_executable(object_track_node
+  src/object_track_fun.cpp
+  src/object_track_node.cpp
+)
+target_link_libraries(object_track_node ${catkin_LIBRARIES})
 #############
 ## Install ##
 #############
@@ -206,10 +202,9 @@ target_link_libraries(offboard_test ${catkin_LIBRARIES})
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_offboard.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_object_track.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
-
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)

@@ -54,7 +54,7 @@ extern int confirm_torget_data(data_t* new_data, data_t* buf_data, data_t* oldda
 extern int getdata(data_t* new_data, char *const path, data_t* const olddata);
 extern int disposal_data(move_t* move, data_t* const data);
 //获取yolo runs 运行的最新exp文件路径
-int new_runs_catalogue_path(char* const path, char* newfile_path);
+extern int new_runs_catalogue_path(char* const path, char* newfile_path);
 //自己的sleep休眠阻塞函数，单位ms
 extern int sleep_ms(int time);
 

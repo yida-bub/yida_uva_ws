@@ -1,2 +1,0 @@
-learning_topic:offboard:uva_control_topic
--DCATKIN_DEVEL_PREFIX=/home/xyd/workspace/yida_uva_ws/devel -DCMAKE_INSTALL_PREFIX=/home/xyd/workspace/yida_uva_ws/install -G Unix Makefiles
