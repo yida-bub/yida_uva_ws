@@ -16,19 +16,19 @@
 #include <mavros_msgs/CommandBool.h>  //CommandBool服务的头文件，该服务的类型为mavros_msgs：：CommandBool
 #include <mavros_msgs/SetMode.h>     //SetMode服务的头文件，该服务的类型为mavros_msgs：：SetMode
 #include <mavros_msgs/State.h>  //订阅的消息体的头文件，该消息体的类型为mavros_msgs：：State
-#include <mavros_msgs/PositionTarget.h>
-#include <geometry_msgs/PoseStamped.h>
-#include <mavros_msgs/RCIn.h>
+#include <mavros_msgs/PositionTarget.h> //发布消息，来控制无人机的运动
+#include <geometry_msgs/PoseStamped.h> //用来订阅无人机的位置信息，相对home点
+#include <mavros_msgs/RCIn.h> //订阅遥控器输入信息，主要用来使用6通道，退出程序运行
 
 #define PI 3.1415926535898
 #define ANGTORAD_COE (PI/180)
 #define RADTOANG_COE (180/PI)
 #define Y_OVERLOOK_K 0.10 //图像中心点y坐标无动作范围	
 #define X_OVERLOOK_K 0.12 //图像中心点x坐标无动作范围
+						  //即锁定的目标在图像中心左右范围内，程序无动作，即无人机无动作
 #define LANGUAGE ZH //设置信息输出的语言：EH/ZH
-#define TIME_DIST 0.25 //目标在图像内可允许移动的最大距离
-#define YOLO_RUNS_DETECT_PATH "/home/nuc11/workspace/yolov5/runs/detect/"
-// #define YOLO_RUNS_DETECT_PATH "/home/xyd/workspace/yolov5/runs/detect/"
+#define TIME_DIST 0.25 //目标在图像内可允许移动的最大距离，即本次帧与上一帧俩锁定目标之间可允许的最大距离
+#define YOLO_RUNS_DETECT_PATH "/home/nuc11/workspace/yolov5/runs/detect/" //Yolov5的检测的保存路径，到detect/目录， exp的不写
 #define PRINTF_SWITCH //打印输出开关
 
 //起飞高度，飞行高度
